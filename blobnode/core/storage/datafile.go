@@ -359,6 +359,7 @@ func (cd *datafile) Write(ctx context.Context, shard *core.Shard) error {
 		return err
 	}
 
+	//write
 	_, err = encoder.Encode(tr, int64(shard.Size), tw)
 	span.AppendTrackLogWithDuration("net.r", tr.Duration(), err)
 	span.AppendTrackLogWithDuration("dat.w", twRaw.Duration(), err)

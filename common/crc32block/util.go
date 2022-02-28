@@ -31,6 +31,7 @@ var (
 	ErrReadOnClosed  = errors.New("crc32block: read on closed")
 )
 
+// block 长度必须为4k的整数倍
 func isValidBlockLen(blockLen int64) bool {
 	return blockLen > 0 && blockLen%baseBlockLen == 0
 }
@@ -53,7 +54,7 @@ func EncodeSize(size int64, blockLen int64) int64 {
 	}
 	payload := blockPayload(blockLen)
 	blockCnt := (size + (payload - 1)) / payload
-	return size + 4*blockCnt
+	return size + crc32Len*blockCnt
 }
 
 func DecodeSize(totalSize int64, blockLen int64) int64 {

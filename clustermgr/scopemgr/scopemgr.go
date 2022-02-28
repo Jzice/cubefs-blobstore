@@ -38,6 +38,11 @@ type ScopeMgrAPI interface {
 	GetCurrent(name string) uint64
 }
 
+var (
+	_ ScopeMgrAPI = (*ScopeMgr)(nil)
+)
+
+// Bid分配范围管理器
 type ScopeMgr struct {
 	scopeItems map[string]uint64
 	raftServer raftserver.RaftServer
@@ -64,6 +69,7 @@ func (s *ScopeMgr) SetRaftServer(raftServer raftserver.RaftServer) {
 	s.raftServer = raftServer
 }
 
+//
 func (s *ScopeMgr) Alloc(ctx context.Context, name string, count int) (base, new uint64, err error) {
 	if count <= 0 {
 		return 0, 0, ErrInvalidCount
@@ -98,6 +104,7 @@ func (s *ScopeMgr) GetCurrent(name string) uint64 {
 	return s.scopeItems[name]
 }
 
+//
 func (s *ScopeMgr) applyCommit(ctx context.Context, args *allocCtx) error {
 	s.lock.Lock()
 	defer s.lock.Unlock()

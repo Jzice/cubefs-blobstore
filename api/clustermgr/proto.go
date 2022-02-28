@@ -27,6 +27,7 @@ const (
 	ConsulRegisterPath = "ebs/%s/clusters/"
 )
 
+// 集群信息
 type ClusterInfo struct {
 	Region    string          `json:"region"`
 	ClusterID proto.ClusterID `json:"cluster_id"`

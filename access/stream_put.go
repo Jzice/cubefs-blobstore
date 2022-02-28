@@ -364,6 +364,7 @@ func (h *Handler) writeToBlobnodes(ctx context.Context,
 		badIdx = append(badIdx, uint8(i))
 	}
 
+	// 写够了最小可写入量
 	if writtenNum >= putQuorum {
 		return
 	}

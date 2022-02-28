@@ -482,6 +482,7 @@ func (h *Handler) readOneShard(ctx context.Context, serviceController controller
 	return shardResult
 }
 
+// 从blobnode读取blob中需要的shards数据
 func (h *Handler) getDataShardOnly(ctx context.Context, getTime *times,
 	w io.Writer, serviceController controller.ServiceController,
 	clusterID proto.ClusterID, blob blobGetArgs) error {
@@ -653,6 +654,7 @@ func (h *Handler) getOneShardFromHost(ctx context.Context, serviceController con
 	return rbody, rerr
 }
 
+// 获取location中offset开始readSize范围内的blobs
 func genLocationBlobs(location *access.Location, readSize uint64, offset uint64) ([]blobGetArgs, error) {
 	if offset+readSize > location.Size {
 		return nil, fmt.Errorf("FileSize:%d ReadSize:%d Offset:%d", location.Size, readSize, offset)
@@ -706,6 +708,7 @@ func genLocationBlobs(location *access.Location, readSize uint64, offset uint64)
 	return blobs, nil
 }
 
+// 获取clusterMgr上按distance排序的vuid
 func genSortedVuidByIDC(ctx context.Context, serviceController controller.ServiceController, idc string,
 	vuidPhys []controller.Unit) []sortedVuid {
 	span := trace.SpanFromContextSafe(ctx)

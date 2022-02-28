@@ -342,6 +342,7 @@ func (c *client) putObject(ctx context.Context, args *PutArgs) (location Locatio
 		buffer []byte
 		reader *hadReader
 	)
+	//如果写入数据大小<=8MB, 则将要写入的数据放到缓存中
 	if args.Size > 0 && args.Size <= _cacheBufferPutOnce {
 		cached = true
 		buffer, _ = memPool.Alloc(int(args.Size))
@@ -362,7 +363,7 @@ func (c *client) putObject(ctx context.Context, args *PutArgs) (location Locatio
 
 	err = c.tryN(ctx, c.config.MaxHostRetry, func(host string) error {
 		var body io.Reader
-		if cached {
+		if cached { //存在缓存
 			body = bytes.NewReader(buffer)
 		} else {
 			if reader.isRead {

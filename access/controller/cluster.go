@@ -159,6 +159,7 @@ func NewClusterController(cfg *ClusterConfig, kvClient *api.Client) (ClusterCont
 	return controller, nil
 }
 
+// 从consul中加载region下的所有cluster
 func (c *clusterControllerImpl) load() error {
 	span := trace.SpanFromContextSafe(context.Background())
 
@@ -288,6 +289,10 @@ func (c *clusterControllerImpl) All() []*cmapi.ClusterInfo {
 	return ret
 }
 
+// 挑选一个clusterID
+// 支持两种算法：
+// * Available：
+// * Random:
 func (c *clusterControllerImpl) ChooseOne() (*cmapi.ClusterInfo, error) {
 	alg := AlgChoose(atomic.LoadUint32(&c.allocAlg))
 

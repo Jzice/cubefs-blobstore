@@ -66,7 +66,7 @@ func (c *VolumeMgrConfig) checkAndFix() {
 	if c.RetainTimeS <= 0 {
 		c.RetainTimeS = defaultRetainTimeS
 	}
-	if c.RetainThreshold > 0 {
+	if c.RetainThreshold > 0 { //?
 		c.RetainThreshold = defaultRetainThreshold
 	}
 	if c.FlushIntervalS <= 0 {

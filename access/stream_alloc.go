@@ -90,6 +90,9 @@ func (h *Handler) allocFromAllocatorWithHystrix(ctx context.Context, codeMode co
 	return
 }
 
+//从Allocator分配clusterID, blobs
+//* clusterID:
+//*
 func (h *Handler) allocFromAllocator(ctx context.Context, codeMode codemode.CodeMode, size uint64, blobSize uint32,
 	clusterID proto.ClusterID) (proto.ClusterID, []access.SliceInfo, error) {
 	span := trace.SpanFromContextSafe(ctx)

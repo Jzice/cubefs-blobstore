@@ -109,6 +109,7 @@ func (vol *volume) canAlloc(freezeThreshold uint64, allocatableScoreThreshold in
 	return false
 }
 
+// 是否可以持有
 func (vol *volume) canRetain(freezeThreshold uint64, retainThreshold int) bool {
 	if vol.volInfoBase.Free > freezeThreshold &&
 		vol.volInfoBase.HealthScore >= retainThreshold &&

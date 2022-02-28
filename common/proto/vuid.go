@@ -20,17 +20,24 @@ import (
 )
 
 type (
-	Vuid       uint64
-	VuidPrefix uint64
+	Vuid       uint64 //Vuid is vid + idx + epoch
+	VuidPrefix uint64 //Vuid's prefix is head of 40bits value
 )
 
 const (
-	MaxEpoch    = 16777215
 	MinEpoch    = 1
+	MaxEpoch    = 16777215 //1<<24
 	InvalidVuid = Vuid(0)
 	MinIndex    = 0
-	MaxIndex    = 255
+	MaxIndex    = 255 //1<<8
 )
+
+/*
+         |             64bits              |
+ Vuid    |   |   |   |   |   |   |    |    |
+         |  vid(32bits)  |idx|epoch(24bits)|
+         |      prefix       |   epoch     |
+*/
 
 func (vu Vuid) IsValid() bool {
 	return vu > InvalidVuid && IsValidEpoch(vu.Epoch()) && IsValidIndex(vu.Index())
@@ -56,6 +63,7 @@ func EncodeVuid(v VuidPrefix, epoch uint32) Vuid {
 	return Vuid(u64)
 }
 
+// Convert vuid to vid
 func (v Vuid) Vid() Vid {
 	return Vid(v & 0xffffffff00000000 >> 32)
 }
@@ -64,10 +72,12 @@ func (v Vuid) ToString() string {
 	return strconv.FormatUint(uint64(v), 10)
 }
 
+// Idx value of Vuid
 func (v Vuid) Index() uint8 {
 	return uint8(v & 0xff000000 >> 24)
 }
 
+// Epoch value of Vuid of right 24bits
 func (v Vuid) Epoch() uint32 {
 	return uint32(v & 0xffffff)
 }

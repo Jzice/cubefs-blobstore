@@ -225,6 +225,7 @@ func (v *VolumeMgr) ListAllocatedVolume(ctx context.Context, host string, mode c
 	return
 }
 
+// 预持有卷
 func (v *VolumeMgr) PreRetainVolume(ctx context.Context, tokens []string, host string) (ret *cm.RetainVolumes, err error) {
 	span := trace.SpanFromContextSafe(ctx)
 	span.Debugf("start preRetain volume, tokens is %#v,host is %s", tokens, host)
@@ -503,6 +504,7 @@ func (v *VolumeMgr) Report(ctx context.Context, region string, clusterID proto.C
 	v.reportVolStatusInfo(stat, region, clusterID)
 }
 
+// 执行retain volume操作，记录volume持有信息
 func (v *VolumeMgr) applyRetainVolume(ctx context.Context, retainVolTokens []cm.RetainVolume) error {
 	span := trace.SpanFromContextSafe(ctx)
 	span.Debugf("start apply retain volume, retain tokens  is %#v", retainVolTokens)

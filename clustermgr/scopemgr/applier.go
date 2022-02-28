@@ -37,6 +37,11 @@ type allocCtx struct {
 	Current uint64 `json:"current"`
 }
 
+var (
+	_ base.RaftApplier = (*ScopeMgr)(nil)
+)
+
+// 加载db中scope表数据到管理器内存scopeItems中
 func (s *ScopeMgr) LoadData(ctx context.Context) error {
 	span := trace.SpanFromContextSafe(ctx)
 	scopeItems, err := s.tbl.Load()
@@ -55,6 +60,7 @@ func (s *ScopeMgr) GetModuleName() string {
 func (s *ScopeMgr) SetModuleName(module string) {
 }
 
+//
 func (s *ScopeMgr) Apply(ctx context.Context, operTypes []int32, datas [][]byte, contexts []base.ProposeContext) error {
 	span := trace.SpanFromContextSafe(ctx)
 	for i := range operTypes {

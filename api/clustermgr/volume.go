@@ -34,17 +34,20 @@ type GetVolumeArgs struct {
 	Vid proto.Vid `json:"vid"`
 }
 
+// 卷单元
 type Unit struct {
 	Vuid   proto.Vuid   `json:"vuid"`
 	DiskID proto.DiskID `json:"disk_id"`
 	Host   string       `json:"host"`
 }
 
+// 卷信息
 type VolumeInfo struct {
 	Units []Unit `json:"units"`
 	VolumeInfoBase
 }
 
+// 卷基本信息
 type VolumeInfoBase struct {
 	Vid            proto.Vid          `json:"vid"`
 	CodeMode       codemode.CodeMode  `json:"code_mode"`
@@ -56,6 +59,7 @@ type VolumeInfoBase struct {
 	CreateByNodeID uint64             `json:"create_by_node_id"`
 }
 
+// 卷分配情况
 type AllocVolumeInfo struct {
 	VolumeInfo
 	Token      string `json:"token"`
@@ -104,6 +108,7 @@ type AllocatedVolumeInfos struct {
 	AllocVolumeInfos []AllocVolumeInfo `json:"alloc_volume_infos"`
 }
 
+// 分配一个卷
 func (c *Client) AllocVolume(ctx context.Context, args *AllocVolumeArgs) (ret AllocatedVolumeInfos, err error) {
 	err = c.PostWith(ctx, "/volume/alloc", &ret, args)
 	return
@@ -115,6 +120,7 @@ type UpdateVolumeArgs struct {
 	OldVuid   proto.Vuid   `json:"old_vuid"`
 }
 
+// 更新卷
 func (c *Client) UpdateVolume(ctx context.Context, args *UpdateVolumeArgs) (err error) {
 	err = c.PostWith(ctx, "/volume/update", nil, args)
 	return
@@ -134,6 +140,7 @@ type RetainVolumes struct {
 	RetainVolTokens []RetainVolume `json:"retain_vol_tokens"`
 }
 
+// 继续持有卷
 func (c *Client) RetainVolume(ctx context.Context, args *RetainVolumeArgs) (ret RetainVolumes, err error) {
 	err = c.PostWith(ctx, "/volume/retain", &ret, args)
 	return
@@ -143,6 +150,7 @@ type LockVolumeArgs struct {
 	Vid proto.Vid `json:"vid"`
 }
 
+// 锁定卷
 func (c *Client) LockVolume(ctx context.Context, args *LockVolumeArgs) (err error) {
 	err = c.PostWith(ctx, "/volume/lock", nil, args)
 	return
@@ -152,6 +160,7 @@ type UnlockVolumeArgs struct {
 	Vid proto.Vid `json:"vid"`
 }
 
+// 解锁volume
 func (c *Client) UnlockVolume(ctx context.Context, args *UnlockVolumeArgs) (err error) {
 	err = c.PostWith(ctx, "/volume/unlock", nil, args)
 	return
@@ -166,6 +175,7 @@ type AllocVolumeUnit struct {
 	DiskID proto.DiskID `json:"disk_id"`
 }
 
+// 为volume新分配一个unit
 func (c *Client) AllocVolumeUnit(ctx context.Context, args *AllocVolumeUnitArgs) (ret *AllocVolumeUnit, err error) {
 	err = c.PostWith(ctx, "/volume/unit/alloc", &ret, args)
 	return
@@ -176,6 +186,7 @@ type ReleaseVolumeUnitArgs struct {
 	DiskID proto.DiskID `json:"disk_id"`
 }
 
+// 释放一个volume 的unit
 func (c *Client) ReleaseVolumeUnit(ctx context.Context, args *ReleaseVolumeUnitArgs) (err error) {
 	err = c.PostWith(ctx, "/volume/unit/release", nil, args)
 	return
@@ -310,6 +321,7 @@ type SetCompactChunkArgs struct {
 	Compacting bool       `json:"compact"`
 }
 
+// 设置compact
 func (c *Client) SetCompactChunk(ctx context.Context, args *SetCompactChunkArgs) (err error) {
 	err = c.PostWith(ctx, "/chunk/set/compact", nil, args)
 	return

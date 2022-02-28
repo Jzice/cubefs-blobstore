@@ -247,6 +247,8 @@ func (v *volumeMgr) List(ctx context.Context, codeMode codemode.CodeMode) (vids 
 	return
 }
 
+// 根据参数分配一个vid
+//
 func (v *volumeMgr) allocVid(ctx context.Context, args *allocator.AllocVolsArgs) (selectVid proto.Vid, err error) {
 	span := trace.SpanFromContextSafe(ctx)
 	modeInfo := v.modeInfos[args.CodeMode]
@@ -360,6 +362,7 @@ func (v *volumeMgr) allocNotify(ctx context.Context, mode codemode.CodeMode, cou
 	}
 }
 
+// alloc volume by clusterMgr AllocVolume API
 func (v *volumeMgr) allocVolume(ctx context.Context, args *clustermgr.AllocVolumeArgs) (ret []clustermgr.AllocVolumeInfo,
 	err error) {
 	span := trace.SpanFromContextSafe(ctx)

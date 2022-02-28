@@ -194,6 +194,7 @@ func (s *Service) VolumeUpdate(c *rpc.Context) {
 	}
 }
 
+// 持有卷:
 func (s *Service) VolumeRetain(c *rpc.Context) {
 	ctx := c.Request.Context()
 	span := trace.SpanFromContextSafe(ctx)
@@ -344,6 +345,7 @@ func (s *Service) ChunkReport(c *rpc.Context) {
 	}
 }
 
+// 设置clusterMgr vol table中Chunk compact 状态
 func (s *Service) ChunkSetCompact(c *rpc.Context) {
 	ctx := c.Request.Context()
 	span := trace.SpanFromContextSafe(ctx)

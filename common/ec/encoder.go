@@ -73,6 +73,10 @@ type encoder struct {
 	*Config
 }
 
+var (
+	_ Encoder = (*encoder)(nil)
+)
+
 // NewEncoder return an encoder which support normal EC or LRC
 func NewEncoder(cfg *Config) (Encoder, error) {
 	if cfg == nil {
@@ -101,10 +105,12 @@ func NewEncoder(cfg *Config) (Encoder, error) {
 			return nil, err
 		}
 		return &lrcEncoder{
-			engine:      engine,
+			encoder: encoder{
+				engine:   engine,
+				taskPool: tp,
+				Config:   cfg,
+			},
 			localEngine: localEngine,
-			taskPool:    tp,
-			Config:      cfg,
 		}, nil
 	}
 

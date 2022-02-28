@@ -119,6 +119,7 @@ func (b *bidMgr) allocBid(ctx context.Context) (err error) {
 	return
 }
 
+// Alloc count bids from bidMgr
 func (b *bidMgr) Alloc(ctx context.Context, count uint64) (bidRange []BidRange, err error) {
 	span := trace.SpanFromContextSafe(ctx)
 	bidRange = make([]BidRange, 0)
@@ -141,6 +142,7 @@ func (b *bidMgr) Alloc(ctx context.Context, count uint64) (bidRange []BidRange, 
 	if b.current == nil {
 		return nil, apierrors.ErrAllocBidFromCm
 	}
+	// b.current has enough range
 	if count+uint64(b.current.minBid)-1 <= uint64(b.current.maxBid) {
 		br := BidRange{
 			StartBid: b.current.minBid,
@@ -156,11 +158,17 @@ func (b *bidMgr) Alloc(ctx context.Context, count uint64) (bidRange []BidRange, 
 		span.Debugf("after alloc, current bidScope:%v,backup bidScope:%v", b.current, b.backup)
 		return
 	}
+
+	// b.current has not enough range,
+
+	// 1. take all bids from b.current;
 	br1 := BidRange{
 		StartBid: b.current.minBid,
 		EndBid:   b.current.maxBid,
 	}
 	bidRange = append(bidRange, br1)
+
+	// 2. take left bids from b.backup
 	bidCountRemain := count - uint64(b.current.maxBid-b.current.minBid+1)
 	if b.backup == nil {
 		return nil, apierrors.ErrAllocBidFromCm

@@ -21,15 +21,16 @@ import (
 	"github.com/klauspost/reedsolomon"
 
 	"github.com/cubefs/blobstore/util/errors"
-	"github.com/cubefs/blobstore/util/taskpool"
 )
 
 type lrcEncoder struct {
-	engine      reedsolomon.Encoder
+	encoder
 	localEngine reedsolomon.Encoder
-	taskPool    taskpool.TaskPool
-	*Config
 }
+
+var (
+	_ Encoder = (*lrcEncoder)(nil)
+)
 
 func (e *lrcEncoder) Encode(shards [][]byte) error {
 	if len(shards) != (e.CodeMode.N + e.CodeMode.M + e.CodeMode.L) {

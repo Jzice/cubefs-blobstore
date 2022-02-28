@@ -92,11 +92,11 @@ func NewHandler(service *Service) *rpc.Router {
 	rpc.RegisterArgsParser(&bnapi.PutShardArgs{}, "json")
 
 	rpc.Use(service.requestCounter) // first interceptor
-	r.Handle(http.MethodGet, "/stat", service.Stat, rpc.OptArgsQuery())
-	r.Handle(http.MethodGet, "/debug/stat", service.DebugStat, rpc.OptArgsQuery())
+	r.Handle(http.MethodGet, rpc.BLOBNODE_API_URI_STAT, service.Stat, rpc.OptArgsQuery())
+	r.Handle(http.MethodGet, rpc.BLOBNODE_API_URI_DEBUG_STAT, service.DebugStat, rpc.OptArgsQuery())
 
-	r.Handle(http.MethodGet, "/disk/stat/diskid/:diskid", service.DiskStat_, rpc.OptArgsURI())
-	r.Handle(http.MethodPost, "/disk/probe", service.DiskProbe, rpc.OptArgsBody())
+	r.Handle(http.MethodGet, rpc.BLOBNODE_API_URI_DISK_STAT, service.DiskStat_, rpc.OptArgsURI())
+	r.Handle(http.MethodPost, rpc.BLOBNODE_API_URI_DISK_PROBE, service.DiskProbe, rpc.OptArgsBody())
 
 	r.Handle(http.MethodPost, "/chunk/create/diskid/:diskid/vuid/:vuid", service.ChunkCreate_, rpc.OptArgsURI(), rpc.OptArgsQuery())
 	r.Handle(http.MethodPost, "/chunk/release/diskid/:diskid/vuid/:vuid", service.ChunkRelease_, rpc.OptArgsURI(), rpc.OptArgsQuery())

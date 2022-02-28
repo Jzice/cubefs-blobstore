@@ -184,6 +184,7 @@ func NewService(conf Config) (svr *Service, err error) {
 
 	configInit(&conf)
 
+	//TODO: get clusterMgr from consul
 	clusterMgrCli := cmapi.New(conf.Clustermgr)
 
 	registeredDisks, err := clusterMgrCli.ListHostDisk(ctx, conf.Host)

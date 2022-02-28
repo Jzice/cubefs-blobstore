@@ -49,7 +49,7 @@ func (c *client) Close(ctx context.Context, host string) (err error) {
 }
 
 func (c *client) Stat(ctx context.Context, host string) (dis []*DiskInfo, err error) {
-	urlStr := fmt.Sprintf("%v/stat", host)
+	urlStr := fmt.Sprintf(rpc.BLOBNODE_API_URI_STAT_FMT, host)
 	dis = make([]*DiskInfo, 0)
 	err = c.GetWith(ctx, urlStr, &dis)
 	return
@@ -64,7 +64,7 @@ func (c *client) DiskInfo(ctx context.Context, host string, args *DiskStatArgs) 
 		return nil, errors.ErrInvalidDiskId
 	}
 
-	urlStr := fmt.Sprintf("%v/disk/stat/diskid/%v", host, args.DiskID)
+	urlStr := fmt.Sprintf(rpc.BLOBNODE_API_URI_DISK_STAT_FMT, host, args.DiskID)
 	di = new(DiskInfo)
 	err = c.GetWith(ctx, urlStr, di)
 	return
